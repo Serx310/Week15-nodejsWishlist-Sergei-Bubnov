@@ -2,9 +2,15 @@ const date = require('../getDate.js');
 const Wish = require('../models/wish')
 
 exports.getMainPage = (request, response)=>{
-    let today = date.getDate();
+    Wish.fetchWishes(wishes => {
+        console.log(wishes);
 
-    response.render('index', {dateToRender: today});
+        let today = date.getDate();
+        response.render('index', {dateToRender: today, myWishes: wishes});
+    });
+
+    
+
 };
 
 exports.getDate = (request, response)=>{
@@ -19,9 +25,15 @@ exports.getWeekday = (request, response)=>{
 
 exports.postWish = (req, res) => {
     console.log(req.body.userWish);
-    const newWish = new Wish(req.body.userWish);
+    const newWish = new Wish(req.body.userWish, req.file.filename);
     newWish.saveWish();
 
     res.redirect('/');
 
+}
+
+exports.deleteWish = (req, res) =>{
+    let wishToDelete = req.body.wishToDelete;
+    Wish.deleteWish(wishToDelete);
+    res.redirect('/');
 }

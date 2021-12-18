@@ -5,20 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My wish list</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/daf0640b84.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
         <h1>
             <%= dateToRender %>
         </h1>
-        <form action="/" method="post">
+        <form action="/" method="post" enctype="multipart/form-data">
             <input type="text" name="userWish" placeholder="add a wish">
+            <input type="file" name="userFile">
             <button type="submit">Add a wish</button>
+            
 
         </form>
-
+        <hr>
         <div class="wish-container">
+            <ul>
+                <% for(let i = 0; i < myWishes.length; i++) {%>
+                    <li> <%= myWishes[i].description %> 
+                    <form action="/deleteWish" method="post" style="display: inline-block;">
+                        <input type="hidden" name="wishToDelete" value="<%= myWishes[i].description %>">
+                        <button type="submit"><i class="fas fa-minus-circle"></i></button>
+                    </form>
+                    
+                    <img src="<%= myWishes[i].imageUrl %>" alt="">
+                    </li>
 
+                <% }%>
+            </ul>
         </div>
 
     </div>
